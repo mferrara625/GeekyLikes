@@ -17,10 +17,12 @@ import java.util.function.Function;
 @Component
 public class JwtTokenUtil implements Serializable {
 
+    private static final long serialVersionUID = 123456L;
+
     @Value("${jwt.secret}")
     private String secret;
 
-    public String getUserIdFromToken(String token){
+    public String getUsernameFromToken(String token){
         return getClaimFromToken(token, Claims::getSubject);
     }
 
@@ -39,7 +41,7 @@ public class JwtTokenUtil implements Serializable {
     }
 
     private Claims getAllClaimsFromToken(String token){
-        return Jwts.parser().setSigningKey(secret).parseClaimsJwt(token).getBody();
+        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
     }
 
     public String generateToken(UserDetails userDetails){
@@ -55,8 +57,8 @@ public class JwtTokenUtil implements Serializable {
                 .signWith(SignatureAlgorithm.HS512, secret).compact();
     }
 
-    private Boolean ValidateToken(String token, UserDetails userDetails){
-        final String username = getUserIdFromToken(token);
+    public Boolean validateToken(String token, UserDetails userDetails){
+        final String username = getUsernameFromToken(token);
 //        return username.equals((userDetails.getUsername()) && !isTokenExpired);
         return username.equals((userDetails.getUsername()));
     }
