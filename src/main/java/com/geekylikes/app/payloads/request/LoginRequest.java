@@ -1,14 +1,10 @@
-package com.geekylikes.app.models.bodies;
+package com.geekylikes.app.payloads.request;
 
-public class JwtRequest {
-
+public class LoginRequest {
     private String username;
     private String password;
 
-    public JwtRequest() {
-    }
-
-    public JwtRequest(String username, String password) {
+    public LoginRequest(String username, String password) {
         this.username = username;
         this.password = password;
     }
